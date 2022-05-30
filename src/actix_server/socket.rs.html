@@ -5,7 +5,9 @@
     <nav class="sidebar"><a class="sidebar-logo" href="../../actix_server/index.html"><div class="logo-container">
                     <img src="https://actix.rs/img/logo.png" alt="logo"></div>
         </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../actix_server/index.html">
-                        <img src="https://actix.rs/img/logo.png" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+                        <img src="https://actix.rs/img/logo.png" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -277,7 +279,6 @@
 <span id="270">270</span>
 <span id="271">271</span>
 <span id="272">272</span>
-<span id="273">273</span>
 </pre><pre class="rust"><code><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">std::net</span>::{
     <span class="ident">SocketAddr</span> <span class="kw">as</span> <span class="ident">StdSocketAddr</span>, <span class="ident">TcpListener</span> <span class="kw">as</span> <span class="ident">StdTcpListener</span>, <span class="ident">ToSocketAddrs</span>,
 };
@@ -286,7 +287,6 @@
 <span class="kw">use</span> <span class="ident">actix_rt::net::TcpStream</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">mio::net::TcpListener</span> <span class="kw">as</span> <span class="ident">MioTcpListener</span>;
 <span class="kw">use</span> <span class="ident">mio</span>::{<span class="ident">event::Source</span>, <span class="ident">Interest</span>, <span class="ident">Registry</span>, <span class="ident">Token</span>};
-
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> {
     <span class="ident">mio::net::UnixListener</span> <span class="kw">as</span> <span class="ident">MioUnixListener</span>,
@@ -552,5 +552,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_server" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (c5cf08d37 2022-03-30)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_server" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (28b891916 2022-05-29)" ></div>
 </body></html>

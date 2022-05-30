@@ -5,7 +5,9 @@
     <nav class="sidebar"><a class="sidebar-logo" href="../../actix_rt/index.html"><div class="logo-container">
                     <img src="https://actix.rs/img/logo.png" alt="logo"></div>
         </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../actix_rt/index.html">
-                        <img src="https://actix.rs/img/logo.png" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+                        <img src="https://actix.rs/img/logo.png" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -211,8 +213,6 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
-<span id="207">207</span>
-<span id="208">208</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Tokio-based single-threaded async runtime for the Actix ecosystem.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! In most parts of the the Actix ecosystem, it has been chosen to use !Send futures. For this</span>
@@ -266,13 +266,10 @@
 
 <span class="kw">use</span> <span class="ident">std::future::Future</span>;
 
-<span class="kw">use</span> <span class="ident">tokio::task::JoinHandle</span>;
-
 <span class="comment">// Cannot define a main macro when compiled into test harness.</span>
 <span class="comment">// Workaround for https://github.com/rust-lang/rust/issues/62127.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macros&quot;</span>, <span class="ident">not</span>(<span class="ident">test</span>)))]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_macros::main</span>;
-
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macros&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_macros::test</span>;
 
@@ -280,11 +277,12 @@
 <span class="kw">mod</span> <span class="ident">runtime</span>;
 <span class="kw">mod</span> <span class="ident">system</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tokio::pin</span>;
+<span class="kw">use</span> <span class="ident">tokio::task::JoinHandle</span>;
+
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::arbiter</span>::{<span class="ident">Arbiter</span>, <span class="ident">ArbiterHandle</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::runtime::Runtime</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::system</span>::{<span class="ident">System</span>, <span class="ident">SystemRunner</span>};
-
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tokio::pin</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">signal</span> {
     <span class="doccomment">//! Asynchronous signal handling (Tokio re-exports).</span>
@@ -310,7 +308,6 @@
     <span class="kw">use</span> <span class="ident">tokio::io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>, <span class="ident">Interest</span>};
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tokio::net::UdpSocket</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tokio::net</span>::{<span class="ident">TcpListener</span>, <span class="ident">TcpSocket</span>, <span class="ident">TcpStream</span>};
-
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tokio::net</span>::{<span class="ident">UnixDatagram</span>, <span class="ident">UnixListener</span>, <span class="ident">UnixStream</span>};
 
@@ -413,6 +410,7 @@
 <span class="doccomment">/// assert!(handle.await.unwrap_err().is_cancelled());</span>
 <span class="doccomment">/// # });</span>
 <span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">track_caller</span>]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn</span><span class="op">&lt;</span><span class="ident">Fut</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">Fut</span>) -&gt; <span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="ident">Fut::Output</span><span class="op">&gt;</span>
 <span class="kw">where</span>
@@ -422,5 +420,5 @@
     <span class="ident">tokio::task::spawn_local</span>(<span class="ident">f</span>)
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_rt" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (c5cf08d37 2022-03-30)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_rt" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (28b891916 2022-05-29)" ></div>
 </body></html>
